@@ -5,7 +5,8 @@ import json
 import sys
 import re
 from alfred_format import parse
-from constant import default_repo_file, default_token_file
+from constant import default_repo_file, default_token_file, default_username
+from fs_util import read
 
 base_uri = 'https://api.github.com/users/'
 default_user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
@@ -29,10 +30,9 @@ class GitHub:
 
   def validate_token (self):
     try:
-      with open(default_token_file, 'r') as f:
-        token = f.read()
-        self.token = token.strip()
-        return token
+      token = read(default_token_file)
+      self.token = token.strip()
+      return token
     except IOError:
       return False
 
@@ -48,11 +48,10 @@ class GitHub:
 
   def read_repos (self):
     try:
-      with open (default_repo_file) as f:
-        self.repos = json.loads(f.read())
-        if len(self.repos) == 0:
-          return False
-        return True
+      self.repos = read(default_repo_file, isJson = True) or []
+      if len(self.repos) == 0:
+        return False
+      return True
     except:
       return False
 
@@ -68,6 +67,13 @@ class GitHub:
         'html_url': 'https://github.com/settings/tokens'
       })
       return output
+
+    if not self.username:
+      output.append({
+        'full_name': '请先使用 s-user 来添加绑定用户',
+        'html_url': 'https://github.com'
+      });
+      return output;
 
     results = list(filter(lambda item: re.search(query, item['full_name']), self.repos));
 
@@ -108,7 +114,8 @@ class GitHub:
         self.write_repos()
 
 
-github = GitHub('374632897')
+github = GitHub(read(default_username))
+
 def main ():
   print(parse(github.filter(sys.argv[1])))
 
