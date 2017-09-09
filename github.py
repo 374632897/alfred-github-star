@@ -60,7 +60,7 @@ class GitHub:
     output = []
 
     default_title = u'更多详细结果， 请前往网页查看'
-    default_link = 'https://github.com/' + str(self.username) + '/starred';
+    default_link = 'https://github.com/' + str(self.username) + '?tab=stars';
 
     if not self.token:
       output.append({
