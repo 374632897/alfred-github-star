@@ -1,6 +1,8 @@
-# alfred-github-starsc
+# alfred-github-stars
 
 An Alfred workflow to show the repos you starred.
+
+![](https://assets.noteawesome.com/chatter/2017/9/9/36436/image.png)
 
 ## Usage
 ### s-token
