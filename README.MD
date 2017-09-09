@@ -1,4 +1,4 @@
-# alfred-github-star
+# alfred-github-stars
 
 An Alfred workflow to show the repos you starred.
 
