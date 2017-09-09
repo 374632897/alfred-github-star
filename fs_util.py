@@ -11,11 +11,11 @@ def write (filename, content = '', isJson = False):
     f.write(content if not isJson else json.dumps(content));
 
 def read (filename, isJson = False):
-  # try:
+  try:
     with open(filename) as f:
       content = f.read()
       return content if not isJson else json.loads(content)
-  # except:
+  except:
     write(filename)
     read(filename)
     return False
